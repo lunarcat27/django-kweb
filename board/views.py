@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 
 from .forms import *
@@ -18,6 +19,24 @@ def user_login(req):
 
 def login_form(req):
     return render(req, 'auth/login.html', {'form': LoginForm(),})
+
+def login_post(req):
+    form = LoginForm(req.POST)
+    if not form.is_valid():
+        return HttpResponse(status = 400)
+
+    user = authenticate(
+        username = form.cleaned_data['username'],
+        password = form.cleaned_data['password'],
+    )
+
+    if user:
+        # login success
+        login(req, user)
+        return redirect('index')
+    else:
+        # login failed
+        return HttpResponse(status = 401)
 
 def register(req):
     if req.user.is_authenticated:
@@ -47,7 +66,8 @@ def register_post(req):
     return redirect('login')
 
 def user_logout(req):
-    pass
+    logout(req)
+    return redirect('index')
 
 def get_article_list(req):
     pass
