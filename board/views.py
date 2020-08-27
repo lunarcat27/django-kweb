@@ -112,7 +112,7 @@ def compose_article_post(req):
     if not form.is_valid():
         return HttpResponse(status = 400)
 
-    article = models.Article.create(
+    article = Article.objects.create(
         title = form.cleaned_data['title'],
         content = form.cleaned_data['content'], 
         author = req.user,
