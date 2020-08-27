@@ -52,7 +52,7 @@ KWEB Board Page {{ page|escape }}
             <a href="{% url 'article_list' page|add:1 %}">&gt; Next Page</a>
         </div>
     {% else %}
-        <div class="disabled">&gt; Next Page</div>
+        <div class="disabled">Next Page &gt;</div>
     {% endif %}
 </div>
 {% endblock %}
