@@ -75,7 +75,7 @@ def user_logout(req):
 def get_article_list(req, page_num):
     article_list = Article.objects.all().filter(is_deleted = False).order_by('-id')
 
-    COUNT = 20
+    COUNT = 10
     start_index = (page_num - 1) * COUNT
     end_index = page_num * COUNT
 
@@ -116,13 +116,50 @@ def compose_article_post(req):
         title = form.cleaned_data['title'],
         content = form.cleaned_data['content'], 
         author = req.user,
+        # 나머지 값은 기본값
     )
     article.save()
 
     return redirect('get_article', article_id = article.id)
 
-def edit_article(req):
-    pass
+def edit_article(req, article_id):
+    if not req.user.is_authenticated:
+        return HttpResponse(status = 404)
 
-def delete_article(req):
-    pass
+    article = get_object_or_404(Article, id = article_id, is_deleted = False, author = req.user)
+
+    if req.method == 'GET':
+        return edit_article_form(req, article)
+    if req.method == 'POST':
+        return edit_article_post(req, article)
+    return HttpResponse(status = 404)
+
+def edit_article_form(req, article):
+    return render(req, 'articles/compose.html', {
+        'form': ArticleForm(initial = {
+            'title': article.title,
+            'content': article.content,
+        })
+    })
+
+def edit_article_post(req, article):
+    form = ArticleForm(req.POST)
+    if not form.is_valid():
+        return HttpResponse(status = 400)
+
+    article.title = form.cleaned_data['title']
+    article.content = form.cleaned_data['content']
+    article.save()
+
+    return redirect('get_article', article_id = article.id)
+
+def delete_article(req, article_id):
+    if not req.user.is_authenticated:
+        return HttpResponse(status = 404)
+
+    article = get_object_or_404(Article, id = article_id, is_deleted = False, author = req.user)
+
+    article.is_deleted = True
+    article.save()
+
+    return redirect('article_list', page_num = 1)

@@ -22,7 +22,7 @@ KWEB Board Page {{ page|escape }}
 {% block content %}
 <div class="title-table">
     <div class="title-row title-header">
-        <div class="article-id">Num</div>
+        <div class="article-id">No.</div>
         <div class="article-title">Title</div>
         <div class="article-author">Author</div>
         <div class="article-lastupdated">Last Updated</div>
@@ -49,7 +49,7 @@ KWEB Board Page {{ page|escape }}
     
     {% if has_next %}
         <div>
-            <a href="{% url 'article_list' page|add:1 %}">&gt; Next Page</a>
+            <a href="{% url 'article_list' page|add:1 %}">Next Page &gt;</a>
         </div>
     {% else %}
         <div class="disabled">Next Page &gt;</div>
