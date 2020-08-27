@@ -1,0 +1,35 @@
+<!-- Parameters -->
+<!-- user -->
+
+{% extends 'base.html' %}
+
+{% block title %}Index Page{% endblock %}
+
+{% block header %}
+<div class="page-title">Welcome to KWEB Community Page!</div>
+<ul>
+    {% if user.is_authenticated %}
+        <li>Hello, {{ user.username|escape }}!</li>
+        <li>
+            <a href="{% url 'logout' %}">Logout</a>
+        </li>
+    {% else %}
+        <div>
+            <a href="{% url 'login' %}">Login</a>
+            &nbsp;/&nbsp;
+            <a href="{% url 'register' %}">Register</a>
+        </div>
+    {% endif %}
+</ul>
+{% endblock %}
+
+{% block content %}
+<ul>
+    <li>
+        <a href="{% url 'article_list' 1 %}">View Articles</a>
+    </li>
+    <li>
+        <a href="{% url 'compose_article' %}">Compose Articles</a>
+    </li>
+</ul>
+{% endblock %}

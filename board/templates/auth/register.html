@@ -1,0 +1,54 @@
+<!-- Parameters -->
+<!-- form -->
+
+{% extends 'base.html' %}
+
+{% block title %}Register{% endblock %}
+
+{% block header %}
+<div class="page-title">Register</div>
+<ul>
+    <li>
+        <a href="{% url 'index' %}">Go to Home</a>
+    </li>
+</ul>
+{% endblock %}
+
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    <div class="panell">
+        <div class="panel-row">
+            <div class="label">Username</div>
+            <div class="input">
+                {{ form.username }}
+            </div>
+        </div>
+        <div class="panel-row">
+            <div class="label">Password</div>
+            <div class="input">
+                {{ form.password }}
+            </div>
+        </div>
+        <div class="panel-row">
+            <div class="label">First Name</div>
+            <div class="input">
+                {{ form.first_name }}
+            </div>
+        </div>
+        <div class="panel-row">
+            <div class="label">Last Name</div>
+            <div class="input">
+                {{ form.last_name }}
+            </div>
+        </div>
+        <div class="panel-row center">
+            <button type="submit">Register</button>
+        </div>
+    </div>
+</form>
+<div>
+    Already a member?&nbsp;
+    <a href="{% url 'login' %}">Login</a>
+</div>
+{% endblock %}
