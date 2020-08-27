@@ -108,7 +108,18 @@ def compose_article_form(req):
     return render(req, 'articles/compose.html', {'form': ArticleForm(),})
 
 def compose_article_post(req):
-    pass
+    form = ArticleForm(req.POST)
+    if not form.is_valid():
+        return HttpResponse(status = 400)
+
+    article = models.Article.create(
+        title = form.cleaned_data['title'],
+        content = form.cleaned_data['content'], 
+        author = req.user,
+    )
+    article.save()
+
+    return redirect('get_article', article_id = article.id)
 
 def edit_article(req):
     pass
